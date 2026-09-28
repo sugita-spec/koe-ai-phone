@@ -1,0 +1,51 @@
+.auth-dialog {
+  width: min(440px, calc(100vw - 32px));
+}
+
+.auth-dialog .dialog-body {
+  padding: 32px;
+}
+
+.auth-dialog h2 {
+  margin: 0 0 10px;
+  font: 600 26px ui-serif, "Yu Mincho", serif;
+}
+
+.auth-dialog .dialog-body > p {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.auth-dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #696c65;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.auth-dialog input {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid #dfdfd7;
+  border-radius: 11px;
+  outline: none;
+  background: #f8f7f2;
+  color: var(--ink);
+}
+
+.auth-dialog input:focus {
+  border-color: #92978a;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(49, 91, 61, 0.09);
+}
+
+.auth-dialog .form-error {
+  min-height: 18px;
+  margin: 0 0 12px;
+  color: #a34536;
+}

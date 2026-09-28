@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#081a33">
+  <title>Koe — AI電話受付</title>
+  <link rel="stylesheet" href="/styles.css?v=20260928-2">
+  <link rel="stylesheet" href="/auth.css?v=20260908-2">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" data-nav="dashboard" aria-label="Koe ホーム">
+        <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+        <span>Koe</span>
+      </a>
+      <nav class="main-nav" aria-label="メインメニュー">
+        <button class="nav-item active" data-nav="dashboard"><span class="nav-icon">⌂</span><span>ダッシュボード</span></button>
+        <button class="nav-item" data-nav="leads"><span class="nav-icon">◎</span><span>リード一覧</span></button>
+        <button class="nav-item" data-nav="campaigns"><span class="nav-icon">◇</span><span>シナリオ・架電</span></button>
+        <button class="nav-item" data-nav="calls"><span class="nav-icon">↗</span><span>通話結果</span></button>
+        <button class="nav-item" data-nav="callbacks"><span class="nav-icon">↶</span><span>折り返し</span></button>
+        <button class="nav-item" data-nav="rules"><span class="nav-icon">⑂</span><span>受電ルール</span></button>
+        <button class="nav-item" data-nav="tasks"><span class="nav-icon">✓</span><span>タスク</span></button>
+        <button class="nav-item" data-nav="analytics"><span class="nav-icon">▥</span><span>分析</span></button>
+        <button class="nav-item" data-nav="voice"><span class="nav-icon">◖</span><span>音声</span></button>
+        <button class="nav-item" data-nav="settings"><span class="nav-icon">✣</span><span>連携・設定</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-status">
+          <span class="status-dot"></span>
+          <div><strong>AI受付</strong><small id="sidebar-status">確認中</small></div>
+        </div>
+        <button class="help-button" data-nav="setup">? <span>接続ガイド</span></button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="page-eyebrow">OVERVIEW</p>
+          <h1 id="page-title">おはようございます</h1>
+        </div>
+        <div class="top-actions">
+          <div class="mode-pill" id="mode-pill"><span></span><b>接続確認中</b></div>
+          <button class="primary compact" data-open-dialer><span>＋</span>電話をかける</button>
+        </div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="hero-grid">
+          <article class="reception-card">
+            <div class="reception-top">
+              <div>
+                <span class="label">AI RECEPTIONIST</span>
+                <h2>電話受付は、<br><em>おまかせください。</em></h2>
+              </div>
+              <label class="power-switch">
+                <input type="checkbox" id="reception-enabled">
+                <span></span>
+              </label>
+            </div>
+            <p id="hero-greeting">受付設定を読み込んでいます…</p>
+            <div class="wave-line" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="reception-footer">
+              <div class="avatar-orbit"><span>AI</span></div>
+              <div><b id="agent-name">AI受付</b><small id="business-hours">営業時間を設定</small></div>
+              <button class="text-button" data-nav="settings">受付内容を編集 →</button>
+            </div>
+          </article>
+
+          <article class="dial-card">
+            <div class="card-heading">
+              <div><span class="label">QUICK CALL</span><h3>すぐに架電</h3></div>
+              <span class="round-icon">↗</span>
+            </div>
+            <form id="quick-dial-form">
+              <label class="single-call-service-field">架電サービス<select name="serviceId" class="single-call-service" aria-describedby="quick-service-summary"></select></label>
+              <div class="service-summary single-call-service-summary" id="quick-service-summary"></div>
+              <label>電話番号<span>日本国内のみ</span><input name="to" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="090-1234-5678" pattern="0[0-9０-９()（）\-‐‑‒–—―ー− .]{9,16}" required></label>
+              <div class="split-fields">
+                <label>お名前<input name="contactName" placeholder="田中さま"></label>
+                <label>用件<input name="purpose" placeholder="予約の確認"></label>
+              </div>
+              <button class="primary wide" type="submit"><span class="phone-glyph">⌕</span>この内容で電話をかける</button>
+            </form>
+            <p class="microcopy">AIであることを冒頭でお伝えします。実行前に設定をご確認ください。</p>
+          </article>
+        </div>
+
+        <div class="metrics" id="metrics">
+          <article><span>本日の通話</span><strong>—</strong><small>件</small></article>
+          <article><span>応答率</span><strong>—</strong><small>%</small></article>
+          <article><span>伝言メモ</span><strong>—</strong><small>件</small></article>
+          <article><span>平均通話</span><strong>—</strong><small>分</small></article>
+        </div>
+
+        <section class="section-block">
+          <div class="section-title"><div><span class="label">RECENT</span><h2>最近の通話</h2></div><button class="text-button" data-nav="calls">すべて見る →</button></div>
+          <div class="call-list" id="recent-calls"><div class="skeleton"></div><div class="skeleton"></div></div>
+        </section>
+      </section>
+
+      <section class="page" id="page-calls">
+        <div class="page-intro">
+          <div><span class="label">CALL LOG</span><h2>通話履歴</h2><p>受付・架電の要点と伝言をまとめて確認できます。</p></div>
+          <div class="call-tools">
+            <div class="segmented" id="call-filter"><button class="active" data-filter="all">すべて</button><button data-filter="inbound">着信</button><button data-filter="outbound">架電</button></div>
+            <button class="secondary" id="export-calls" type="button">CSV出力</button>
+          </div>
+        </div>
+        <label class="call-search"><span>通話を検索</span><input id="call-search" type="search" placeholder="名前・会社名・電話番号・用件・会話内容から検索"></label>
+        <div class="call-list large" id="all-calls"></div>
+      </section>
+
+      <section class="page" id="page-leads">
+        <div class="page-intro ops-page-intro">
+          <div><span class="label">LEAD OPERATIONS</span><h2>リード一覧</h2><p>架電対象、進捗、結果、次の対応を一画面で追跡します。</p></div>
+          <button class="primary compact" data-nav="campaigns" type="button">＋ リストを追加</button>
+        </div>
+        <div class="lead-kpis" id="lead-kpis"></div>
+        <div class="ops-toolbar"><input id="lead-search" type="search" placeholder="会社名・担当者・電話番号を検索"><select id="lead-status-filter"><option value="all">すべての状態</option><option value="queued">発信待ち</option><option value="calling">通話中</option><option value="completed">完了</option><option value="failed">未接続</option><option value="blocked">架電停止</option></select></div>
+        <div class="three-pane leads-console">
+          <section class="pane pane-list"><div class="pane-head"><b>リード</b><small id="lead-count">0件</small></div><div id="lead-list" class="dense-list"></div></section>
+          <section class="pane pane-main"><div class="pane-head"><b>対応タイムライン</b><small>通話と次回対応</small></div><div id="lead-detail" class="lead-detail-empty">リードを選択すると詳細が表示されます。</div></section>
+          <aside class="pane pane-side"><div class="pane-head"><b>今日の管理</b><small>リアルタイム</small></div><div id="lead-side-summary"></div></aside>
+        </div>
+      </section>
+
+      <section class="page" id="page-campaigns">
+        <div class="page-intro">
+          <div><span class="label">LIST CALLING</span><h2>電話リストから架電</h2><p>CSVを読み込み、平日10:00〜19:00に1分1件ずつ順番に発信します。</p></div>
+          <button class="secondary" id="download-campaign-template" type="button">CSV見本をダウンロード</button>
+        </div>
+        <section class="campaign-kpi-section" aria-labelledby="campaign-kpi-title">
+          <div class="section-title"><div><span class="label">RESULTS</span><h2 id="campaign-kpi-title">営業状況</h2></div><small>登録からアポイントまでの流れ</small></div>
+          <div class="campaign-kpis" id="campaign-kpis"><div class="skeleton"></div></div>
+        </section>
+        <div class="campaign-layout">
+          <form id="campaign-form" class="settings-card campaign-form-card">
+            <span class="label">NEW LIST</span><h3>新しい架電リスト</h3>
+            <div class="form-grid">
+              <label class="full">営業サービス<select id="campaign-service" name="serviceId" required></select></label>
+              <div class="full service-summary" id="campaign-service-summary"><p>利用するサービスを読み込んでいます。</p></div>
+              <label>リスト名<input name="name" placeholder="9月 高卒採用支援" required></label>
+              <label>営業目的<input name="purpose" required></label>
+              <label class="full">AIに伝える営業台本<textarea name="script" rows="10" required></textarea><small>選択したサービスの標準台本です。今回だけの補足があれば編集できます。</small></label>
+              <label class="full">比較用の台本（任意）<textarea name="variantBScript" rows="5" placeholder="別の切り口を試す場合だけ入力してください。対象を半分ずつに分けて比較します。"></textarea><small>未入力の場合は、上の台本だけを使います。</small></label>
+              <label>最大架電回数<select name="maxAttempts"><option value="1">1回</option><option value="2" selected>2回</option><option value="3">3回</option><option value="4">4回</option><option value="5">5回</option></select><small>応答がない場合も含む上限です。</small></label>
+              <label>再架電までの時間<input name="retryMinutes" type="number" min="5" max="1440" step="5" value="60"><small>5〜1,440分で指定します。</small></label>
+              <label class="full">留守番電話だった場合<select name="voicemailAction"><option value="retry">メッセージを残さず再架電</option><option value="leave_message">会社名と折り返し先を残す</option><option value="end">再架電せず終了</option></select></label>
+              <label>1日の上限<input name="dailyLimit" type="number" min="1" max="5000" value="200"><small>キャンペーンごとの安全上限</small></label>
+              <label>同時発信数<select name="maxConcurrency"><option value="1">1回線</option><option value="2">2回線</option><option value="3">3回線</option><option value="5">5回線</option></select><small>回線・運用体制に合わせて設定</small></label>
+              <label>発信間隔<input name="paceSeconds" type="number" min="10" max="3600" value="60"><small>秒単位（10〜3,600秒）</small></label>
+              <label>発信時間帯<div class="compact-inputs"><input name="startHour" type="number" min="8" max="20" value="10"><span>〜</span><input name="endHour" type="number" min="9" max="21" value="19"></div></label>
+              <label>発信曜日<select name="allowedWeekdays"><option value="1,2,3,4,5">平日</option><option value="1,2,3,4,5,6">月〜土</option><option value="0,1,2,3,4,5,6">毎日</option></select></label>
+              <label>有人転送先<input name="transferNumber" inputmode="tel" placeholder="設定済み番号を使用"></label>
+              <label class="full campaign-file-drop">電話リスト（CSV）<input id="campaign-file" type="file" accept=".csv,text/csv" required><span>CSVを選択してください</span><small>列名：会社名、氏名、電話番号、個別メモ、架電可否</small></label>
+            </div>
+            <div id="campaign-preview" class="campaign-preview"><p>CSVを選ぶと、ここに確認結果が表示されます。</p></div>
+            <label class="check-row campaign-confirm"><input name="confirmed" type="checkbox" required><span><b>このリストへ架電できることを確認しました</b><small>取得経路と利用目的を確認し、架電拒否・配信停止の連絡先を除外済みです。電話では会社名・担当者名・サービス・営業目的を最初に伝えます。</small></span></label>
+            <button class="primary wide" id="start-campaign" type="submit">リストを登録して架電開始</button>
+            <p class="microcopy">同時発信はせず、通話中は次の番号へ進みません。営業時間外は翌営業日まで待機します。</p>
+          </form>
+          <section class="campaign-history">
+            <div class="section-title"><div><span class="label">CAMPAIGNS</span><h2>架電リストの進捗</h2></div></div>
+            <div id="campaign-list" class="campaign-list"><div class="skeleton"></div></div>
+          </section>
+        </div>
+        <div class="operations-grid">
+          <section class="settings-card operations-card" aria-labelledby="dnc-title">
+            <div class="section-title"><div><span class="label">DO NOT CALL</span><h2 id="dnc-title">架電停止リスト</h2></div><span class="count-badge" id="dnc-count">0件</span></div>
+            <p class="operations-lead">「今後電話しないで」と言われた番号を登録します。すべての架電リストで自動的に除外されます。</p>
+            <form id="dnc-form" class="inline-operation-form">
+              <label>電話番号<input name="phone" type="tel" inputmode="tel" placeholder="03-1234-5678" required></label>
+              <label>理由<input name="reason" placeholder="ご本人から停止希望"></label>
+              <button class="primary" type="submit">停止リストへ追加</button>
+            </form>
+            <div class="simple-list" id="dnc-list"><div class="skeleton"></div></div>
+          </section>
+
+          <section class="settings-card operations-card" aria-labelledby="appointments-title">
+            <div class="section-title"><div><span class="label">APPOINTMENTS</span><h2 id="appointments-title">アポイント管理</h2></div><span class="count-badge" id="appointment-count">0件</span></div>
+            <p class="operations-lead">AIが受け付けた面談希望を確認し、確定・完了まで管理できます。</p>
+            <div class="simple-list" id="appointment-list"><div class="skeleton"></div></div>
+          </section>
+        </div>
+        <section class="settings-card service-manager">
+          <div class="section-title"><div><span class="label">SALES SERVICES</span><h2>営業サービス管理</h2></div><button class="secondary" id="new-service" type="button">新しいサービスを追加</button></div>
+          <p class="operations-lead">サービスごとに会社名・目的・標準台本を登録できます。後から編集や利用停止も可能です。</p>
+          <div class="service-manager-layout">
+            <form id="service-form" class="service-editor" hidden>
+              <input name="id" type="hidden">
+              <div class="form-grid">
+                <label>サービス名<input name="name" placeholder="高卒採用支援" required></label>
+                <label>発信時の会社名<input name="sellerName" placeholder="株式会社KAMEYA Holdings" required></label>
+                <label class="full">営業目的<input name="purpose" placeholder="採用活動のご支援についてご案内" required></label>
+                <label class="full">サービス説明<textarea name="description" rows="3" required></textarea></label>
+                <label class="full">標準台本<textarea name="script" rows="8" required></textarea></label>
+              </div>
+              <div class="form-actions"><button class="secondary" id="cancel-service-edit" type="button">閉じる</button><button class="primary" type="submit">サービスを保存</button></div>
+            </form>
+            <div class="service-admin-list" id="service-admin-list"><div class="skeleton"></div></div>
+          </div>
+        </section>
+        <section class="settings-card sales-voice-studio">
+          <div class="section-title">
+            <div><span class="label">RECORDED PHRASES</span><h2>本人の声・営業フレーズ録音</h2></div>
+            <div class="voice-clip-progress" id="voice-clip-progress">0 / 0 保存済み</div>
+          </div>
+          <p class="studio-lead">フレーズ内容を自由に編集してから、一つずつ録音できます。保存した文章はAIの営業台本にも反映されます。</p>
+          <div class="notice transparency-notice"><span>i</span><p><b>AIであることを隠す設定にはできません。</b> 本人録音の内容にかかわらず、その直後にAI自身が会社名・AI電話担当・サービス名・営業電話であることを必ず明示します。ほかの録音は台本確認用に保存され、現在の通話中には再生されません。</p></div>
+          <div id="sales-voice-clips" class="sales-voice-clips"><div class="skeleton"></div></div>
+        </section>
+      </section>
+
+      <section class="page" id="page-callbacks">
+        <div class="page-intro"><div><span class="label">CALLBACK QUEUE</span><h2>折り返し管理</h2><p>折り返し希望と再架電予定を、期限順に確認できます。</p></div></div>
+        <div class="ops-board"><section class="settings-card"><div class="section-title"><div><span class="label">DUE</span><h2>対応待ち</h2></div><span class="count-badge" id="callback-count">0件</span></div><div id="callback-list" class="dense-table"></div></section><aside class="settings-card ops-guidance"><span class="label">AUTOMATION</span><h3>自動再架電</h3><p>未接続、話中、折り返し希望は設定した時刻まで待機し、架電停止リストを確認してから再実行します。</p><ul><li>営業時間外は翌営業日に繰越</li><li>最大回数を超えたら終了</li><li>停止希望は全キャンペーンで除外</li></ul></aside></div>
+      </section>
+
+      <section class="page" id="page-rules">
+        <div class="page-intro"><div><span class="label">INBOUND ROUTING</span><h2>受電ルール</h2><p>営業時間、あふれ呼、夜間休日、有人転送の順序を管理します。</p></div></div>
+        <div class="rules-layout"><section class="settings-card"><div class="section-title"><div><span class="label">RULES</span><h2>有効なルール</h2></div></div><div id="inbound-rule-list" class="rule-list"></div></section><form id="inbound-rule-form" class="settings-card"><span class="label">NEW RULE</span><h3>ルールを追加</h3><label>ルール名<input name="name" required placeholder="VIP番号は担当者へ転送"></label><div class="form-grid"><label>条件<select name="conditionType"><option value="always">すべての着信</option><option value="business_hours">営業時間内</option><option value="outside_hours">営業時間外</option><option value="caller_prefix">番号の先頭一致</option></select></label><label>条件値<input name="conditionValue" placeholder="03 など"></label><label>処理<select name="actionType"><option value="ai_reception">AI受付</option><option value="take_message">伝言受付</option><option value="transfer">有人転送</option><option value="reject">受付しない</option></select></label><label>転送先・補足<input name="actionValue" placeholder="090-1234-5678"></label><label>優先順位<input name="priority" type="number" min="1" max="999" value="100"></label></div><button class="primary wide" type="submit">ルールを追加</button></form></div>
+      </section>
+
+      <section class="page" id="page-tasks">
+        <div class="page-intro"><div><span class="label">TASKS</span><h2>営業タスク</h2><p>折り返し、商談準備、内容確認を担当者と期限で管理します。</p></div></div>
+        <div class="tasks-layout"><form id="task-form" class="settings-card"><span class="label">NEW TASK</span><h3>タスクを追加</h3><label>内容<input name="title" required placeholder="田中様へ資料送付"></label><div class="form-grid"><label>種類<select name="kind"><option value="followup">フォロー</option><option value="callback">折り返し</option><option value="review">内容確認</option><option value="appointment">商談準備</option></select></label><label>期限<input name="dueAt" type="datetime-local"></label><label>担当者<input name="assignedTo" placeholder="杉田"></label><label class="full">メモ<textarea name="notes" rows="3"></textarea></label></div><button class="primary wide" type="submit">追加する</button></form><section class="settings-card"><div class="section-title"><div><span class="label">WORK QUEUE</span><h2>対応一覧</h2></div><span class="count-badge" id="task-count">0件</span></div><div id="task-list" class="task-list"></div></section></div>
+      </section>
+
+      <section class="page" id="page-analytics">
+        <div class="page-intro"><div><span class="label">PERFORMANCE</span><h2>架電分析</h2><p>接続から受付突破、興味、アポイントまでを可視化します。</p></div><button class="secondary" id="download-monthly-report" type="button">月次レポートCSV</button></div>
+        <div id="analytics-kpis" class="analytics-kpis"></div>
+        <div class="analytics-grid"><section class="analytics-card funnel-card"><div class="card-title"><b>受付突破ファネル</b><small>全期間</small></div><div id="conversion-funnel"></div></section><section class="analytics-card"><div class="card-title"><b>曜日 × 時間帯</b><small>接続件数</small></div><div id="activity-heatmap" class="heatmap"></div></section><section class="analytics-card"><div class="card-title"><b>台本A/B比較</b><small>接続・アポ</small></div><div id="variant-ranking"></div></section><section class="analytics-card recommendation-card"><div class="card-title"><b>改善提案</b><small>自動抽出</small></div><div id="improvement-list"></div></section></div>
+      </section>
+
+      <section class="page" id="page-voice">
+        <div class="page-intro">
+          <div><span class="label">VOICE GREETING</span><h2>本人の声で、最初のご挨拶。</h2><p>短い録音を着信時に再生し、その後をAI受付が引き継ぎます。</p></div>
+          <div class="voice-ready" id="voice-ready"><span>○</span><div><b>未登録</b><small>約10秒で完了</small></div></div>
+        </div>
+
+        <div class="voice-steps greeting-layout">
+          <article class="voice-step greeting-voice-card">
+            <div class="step-num">01</div>
+            <div class="step-copy"><span class="label">YOUR RECORDING</span><h3>案内文を録音</h3><p>静かな場所で、次の文章だけを自然にはっきり読み上げてください。</p></div>
+            <blockquote>お電話ありがとうございます。株式会社カメヤホールディングスです。この電話はAI受付が対応いたします。</blockquote>
+            <div class="recorder" data-recorder="greeting" data-max-seconds="15">
+              <button class="record-button" type="button" aria-label="録音開始・停止"><span></span></button>
+              <div><b>タップして録音</b><small>15秒以内・マイクに近づいて録音</small></div>
+              <time>00:00</time>
+            </div>
+            <div class="or"><span>または</span></div>
+            <label class="file-drop">録音済みファイルを選択<input id="greeting-file" type="file" accept="audio/*"></label>
+            <button class="primary wide" id="upload-greeting" type="button">この音声を着信の挨拶にする</button>
+            <audio class="audio-preview" id="greeting-preview" controls hidden></audio>
+            <button class="text-button delete-greeting" id="delete-greeting" type="button" hidden>登録した音声を削除</button>
+            <p class="step-status" id="greeting-status">まだ登録されていません</p>
+          </article>
+        </div>
+        <div class="notice"><span>i</span><p><b>録音はこの一文だけに使われます。</b> 続く会話は標準AI音声が対応します。音声の学習や声の複製は行いません。</p></div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-intro"><div><span class="label">RECEPTION SETTINGS</span><h2>受付設定</h2><p>AIが名乗る名前、案内内容、引き継ぎルールを整えます。</p></div></div>
+        <form id="settings-form" class="settings-layout">
+          <article class="settings-card">
+            <span class="label">BASIC</span><h3>基本情報</h3>
+            <div class="form-grid">
+              <label>事業・店舗名<input name="businessName" required></label>
+              <label>AI受付の名前<input name="agentName" required></label>
+              <label class="full">最初の挨拶<textarea name="greeting" rows="3" required></textarea></label>
+              <label>営業時間<input name="businessHours"></label>
+              <label>有人転送先<input name="escalationNumber" inputmode="tel" placeholder="03-1234-5678"></label>
+            </div>
+          </article>
+          <article class="settings-card">
+            <span class="label">KNOWLEDGE</span><h3>応対方針と案内情報</h3>
+            <label>話し方・役割<textarea name="role" rows="4"></textarea></label>
+            <label>よくある質問・案内できる情報<textarea name="faq" rows="7"></textarea></label>
+          </article>
+          <article class="settings-card">
+            <span class="label">VOICE & PRIVACY</span><h3>音声と開示</h3>
+            <div class="form-grid">
+              <label>標準ボイス<select name="builtinVoice"><option>marin</option><option>cedar</option><option>coral</option><option>sage</option><option>verse</option><option>alloy</option><option>ash</option><option>ballad</option><option>echo</option><option>shimmer</option></select></label>
+              <label>通話データの保存期間<input name="dataRetentionDays" type="number" min="30" max="365" value="90"><small>30〜365日。期限を過ぎた通話履歴・文字起こしは自動削除されます。</small></label>
+              <label class="full check-row"><input name="recordingNotice" type="checkbox"><span><b>記録の可能性を案内する</b><small>通話冒頭で、品質向上のため内容を記録する場合があると伝えます。</small></span></label>
+            </div>
+          </article>
+          <button class="primary save-settings" type="submit">受付設定を保存</button>
+        </form>
+        <div class="settings-operations">
+          <form id="integrations-form" class="settings-card operations-card">
+            <span class="label">CONNECTIONS</span><h3>外部サービス連携</h3>
+            <p class="operations-lead">カレンダーや顧客管理へ、通話・アポイント情報を自動で送ります。</p>
+            <div id="calendar-connection-status" class="calendar-connection-status"><span>○</span><div><b>Googleカレンダー</b><small>接続状況を確認しています</small></div></div>
+            <button class="secondary wide" id="check-calendar-availability" type="button">空き時間を確認</button>
+            <label>顧客管理（CRM）の送信先URL<input name="crmWebhookUrl" type="url" placeholder="https://..." autocomplete="url"><small>Salesforce・HubSpot・kintoneなどの連携用URL</small></label>
+            <label>カレンダー連携URL<input name="calendarWebhookUrl" type="url" placeholder="https://..." autocomplete="url"><small>空き確認と予定登録に利用します。接続済みの場合は変更しないでください。</small></label>
+            <label>社内チャット通知URL<input name="teamChatWebhookUrl" type="url" placeholder="https://..." autocomplete="url"><small>Slack・Chatwork・LINE WORKSへの通知用Webhook</small></label>
+            <label>スプレッドシート連携URL<input name="sheetsWebhookUrl" type="url" placeholder="https://..." autocomplete="url"><small>Googleスプレッドシートへ通話結果を同期するWebhook</small></label>
+            <label class="check-row"><input name="followupSmsEnabled" type="checkbox"><span><b>通話後のSMSを有効にする</b><small>資料や予約案内を送る場合にオンにします。</small></span></label>
+            <button class="primary wide" type="submit">連携設定を保存</button>
+          </form>
+
+          <section class="settings-card operations-card">
+            <div class="section-title"><div><span class="label">TEAM ACCESS</span><h2>社内メンバー</h2></div><span class="count-badge" id="team-count">0人</span></div>
+            <p class="operations-lead">メンバーごとに専用トークンを発行します。発行されたトークンは一度だけ表示されます。</p>
+            <form id="team-member-form" class="inline-operation-form team-form">
+              <label>氏名<input name="name" placeholder="田中 太郎" required></label>
+              <label>権限<select name="role"><option value="operator">通話・架電担当</option><option value="viewer">閲覧のみ</option><option value="admin">管理者</option></select></label>
+              <button class="primary" type="submit">メンバーを追加</button>
+            </form>
+            <div class="simple-list" id="team-member-list"><div class="skeleton"></div></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="page" id="page-setup">
+        <div class="page-intro"><div><span class="label">CONNECTION GUIDE</span><h2>実通話の接続</h2><p>デモから本番へ切り替えるための4ステップです。</p></div></div>
+        <div class="setup-grid" id="setup-grid"></div>
+        <article class="code-card">
+          <div><span class="label">OPENAI WEBHOOK</span><h3>Webhook URL</h3></div>
+          <code id="webhook-url">https://your-domain.example/webhooks/openai</code>
+          <button type="button" data-copy="#webhook-url">コピー</button>
+        </article>
+        <article class="code-card">
+          <div><span class="label">SIP TERMINATION URI</span><h3>Twilio SIP接続先</h3></div>
+          <code id="sip-uri">sip:proj_xxx@sip.api.openai.com;transport=tls</code>
+          <button type="button" data-copy="#sip-uri">コピー</button>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="モバイルメニュー">
+    <button class="active" data-nav="dashboard">⌂<span>ホーム</span></button><button data-nav="calls">↗<span>履歴</span></button><button data-nav="campaigns">☷<span>リスト</span></button><button class="mobile-call" data-open-dialer>＋</button><button data-nav="voice">◖<span>声</span></button><button data-nav="settings">✣<span>設定</span></button>
+  </nav>
+
+  <dialog id="dialer-dialog">
+    <form method="dialog" class="dialog-head"><div><span class="label">OUTBOUND CALL</span><h2>AIで電話をかける</h2></div><button value="cancel" aria-label="閉じる">×</button></form>
+    <form id="dialer-form" class="dialog-body">
+      <label>架電サービス<select name="serviceId" class="single-call-service" aria-describedby="dialer-service-summary"></select><small>通常連絡、または登録済みの営業サービスを選べます</small></label>
+      <div class="service-summary single-call-service-summary" id="dialer-service-summary"></div>
+      <label>電話番号<input name="to" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="090-1234-5678" pattern="0[0-9０-９()（）\-‐‑‒–—―ー− .]{9,16}" required><small>日本国内の固定電話・携帯電話番号</small></label>
+      <label>お名前<input name="contactName" placeholder="田中さま"></label>
+      <label>電話の目的<input name="purpose" placeholder="明日の予約確認" required></label>
+      <label>AIに伝える台本・注意点<textarea name="script" rows="5" placeholder="予約時刻を確認し、変更希望があれば折り返しと伝える。"></textarea></label>
+      <div class="dialog-actions"><button type="button" class="secondary" data-close-dialog>キャンセル</button><button type="submit" class="primary">電話をかける</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="auth-dialog" class="auth-dialog">
+    <form id="auth-form" class="dialog-body">
+      <span class="label">SECURE ACCESS</span>
+      <h2>社内用サイトにログイン</h2>
+      <p>共有された社内パスワードを入力してください。このブラウザーを閉じると、再入力が必要になります。</p>
+      <label>社内パスワード<input id="admin-token" name="adminToken" type="password" autocomplete="current-password" required></label>
+      <p id="auth-error" class="form-error" role="alert"></p>
+      <button class="primary wide" type="submit">ログイン</button>
+    </form>
+  </dialog>
+
+  <dialog id="call-detail-dialog" class="detail-dialog">
+    <form method="dialog" class="dialog-head"><div><span class="label">CALL DETAIL</span><h2>通話の詳細</h2></div><button value="cancel" aria-label="閉じる">×</button></form>
+    <div class="dialog-body" id="call-detail-body"></div>
+  </dialog>
+
+  <dialog id="team-token-dialog" class="detail-dialog">
+    <form method="dialog" class="dialog-head"><div><span class="label">ONE-TIME TOKEN</span><h2>専用トークンを発行しました</h2></div><button value="cancel" aria-label="閉じる">×</button></form>
+    <div class="dialog-body one-time-token">
+      <p>この画面を閉じると再表示できません。ご本人へ安全な方法で共有してください。</p>
+      <code id="issued-team-token"></code>
+      <button class="primary wide" id="copy-team-token" type="button">トークンをコピー</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"><span>✓</span><p></p></div>
+  <script src="/app.js?v=20260928-2" type="module"></script>
+</body>
+</html>
