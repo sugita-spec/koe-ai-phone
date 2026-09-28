@@ -1,0 +1,12 @@
+node_modules/
+.env
+.dev.vars
+data/state.json
+.wrangler/
+.wrangler-auth/
+.wrangler-log/
+.worker-build/
+.review-cache/
+dist/
+*.log
+.DS_Store

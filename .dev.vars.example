@@ -1,0 +1,10 @@
+# `cp .dev.vars.example .dev.vars` の後、値を設定します。
+# .dev.vars は .gitignore 対象です。
+OPENAI_API_KEY=
+OPENAI_WEBHOOK_SECRET=
+OPENAI_PROJECT_ID=proj_xxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=+815012345678
+ADMIN_TOKEN=十分に長いランダム文字列
+PUBLIC_BASE_URL=http://127.0.0.1:8787

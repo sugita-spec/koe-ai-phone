@@ -1,0 +1,58 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "koe-ai-phone",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-09-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/webhooks/*", "/media/*"],
+    "not_found_handling": "single-page-application"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "koe-ai-phone",
+      "database_id": "469a5e47-b25e-43ff-aee3-3d29ed107715",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "GREETING_MEDIA",
+      "id": "9a41a057cadc44018f1956aa76ed4e34"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "CALL_SESSION", "class_name": "CallSession" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["CallSession"] }
+  ],
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
+  "vars": {
+    "DEMO_MODE": "false",
+    "VOICE_LIVE_MODE": "false",
+    "STORE_TRANSCRIPTS": "true",
+    "OPENAI_PROJECT_ID": "proj_gr6lSNrSqNTxWLV9zkU5WUs9",
+    "PUBLIC_BASE_URL": "https://koe-ai-phone.blue-nation.workers.dev",
+    "TWILIO_ACCOUNT_SID": "AC99d1ba7a5be2d8b74c455e824e95671b",
+    "NOTIFICATION_TO": "info@kameya-hldgs.com",
+    "NOTIFICATION_WEBHOOK_URL": "https://script.google.com/macros/s/AKfycbwdu41Sg6aPXUbUK9OGKGXMwJG4NbF52yenzyDH6OQ0A4BqEP5ZAnmkcp0uvkyd99cB/exec"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.01
+    }
+  }
+}
